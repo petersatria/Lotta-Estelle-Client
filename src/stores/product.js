@@ -6,6 +6,7 @@ export const useProductStore = defineStore('product', {
   state: () => ({
     baseUrl: 'http://localhost:3000',
     products: [],
+    sizeProducts: [],
     product: {}
 
   }),
@@ -13,6 +14,48 @@ export const useProductStore = defineStore('product', {
 
   },
   actions: {
+    async fetchSizeProducts() {
+      try {
+        const { data } = await axios({
+          url: this.baseUrl + '/admin/products/size',
+          headers: { access_token: localStorage.access_token }
+        })
+        this.sizeProducts = data.data
+      } catch (err) {
+        errorHandler(err)
+      }
+    },
+    async createSizeProduct(data) {
+      try {
+        await axios({
+          url: this.baseUrl + '/admin/products/size',
+          method: 'POST',
+          headers: { access_token: localStorage.access_token },
+          data
+        })
+        toast('success', 'Success add size ' + data.size)
+        this.fetchProducts()
+        this.fetchSizeProducts()
+      } catch (err) {
+        errorHandler(err)
+      }
+    },
+    async deleteSizeProduct(id) {
+      try {
+        await axios({
+          url: this.baseUrl + '/admin/products/size/' + id,
+          method: 'DELETE',
+          headers: { access_token: localStorage.access_token }
+        })
+        toast('success', 'Success delete size')
+        this.fetchProducts()
+        this.fetchSizeProducts()
+
+      } catch (err) {
+        console.log(err);
+        errorHandler(err)
+      }
+    },
     async fetchProducts(size, page, filter) {
       try {
         const { data } = await axios({ url: this.baseUrl + '/api/products' })
@@ -27,8 +70,37 @@ export const useProductStore = defineStore('product', {
           url: this.baseUrl + `/api/products/${id}`
         })
         this.product = data.data
-        console.log(data.data);
       } catch (err) {
+        errorHandler(err)
+      }
+    },
+    async createProduct(payload) {
+      try {
+        await axios({
+          url: this.baseUrl + `/admin/products`,
+          method: 'POST',
+          headers: { access_token: localStorage.access_token },
+          data: payload
+        })
+        this.router.push('/admin')
+        this.fetchProducts()
+      } catch (err) {
+        console.log(err);
+        errorHandler(err)
+      }
+    },
+    async updateProduct(payload, id) {
+      try {
+        await axios({
+          url: this.baseUrl + `/admin/products/${id}`,
+          method: 'PUT',
+          headers: { access_token: localStorage.access_token },
+          data: payload
+        })
+        this.router.push('/admin')
+        this.fetchProducts()
+      } catch (err) {
+        console.log(err);
         errorHandler(err)
       }
     },

@@ -31,7 +31,7 @@ export default {
       <div class="bg-body-secondary m-0 p-0 top-0 start-0">
         <div class="row m-0 p-0 min-vh-100 py-5 justify-content-center align-content-center">
           <div class="d-none d-md-flex col-6 p-0">
-            <img src="../assets/images/register.svg" alt="register_image" />
+            <img src="../assets/undraw_welcome.svg" alt="register_image" />
           </div>
           <div class="col-12 col-md-6 p-0 d-flex align-items-center">
             <div class="card border px-4 py-5">
@@ -91,7 +91,13 @@ export default {
                     <textarea class="form-control" v-model="userData.address"></textarea>
                   </div>
                   <div class="col-8 d-flex flex-column align-items-center pt-3">
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <button
+                      type="submit"
+                      class="btn btn-dark w-100 h-100"
+                      style="font-size: 14px; padding: 10px"
+                    >
+                      Register
+                    </button>
                     <p class="mb-0 mt-3">
                       <RouterLink :to="'/login'">Already have an account? Log in</RouterLink>
                     </p>
@@ -109,24 +115,6 @@ export default {
 <style scoped>
 img {
   max-width: 50vw;
-}
-
-.btn {
-  color: white;
-  background-color: #f57a35;
-  border: #f57a35;
-}
-
-.btn:hover {
-  background-color: #d3601e;
-  border: #d3601e;
-  color: white;
-}
-
-.btn:active:focus {
-  background-color: #f57a35;
-  border: #f57a35;
-  color: white;
 }
 
 a {

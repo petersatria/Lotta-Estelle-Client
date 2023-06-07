@@ -36,13 +36,10 @@ export default {
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand me-auto mb-2 mb-lg-0"
-              ><img src="../assets/images/" height="50" alt=""
-            /></a>
+            <RouterLink class="navbar-brand me-auto mb-2 mb-lg-0" :to="'/'"
+              ><h2 class="p-0 m-0">Lotta Estelle</h2></RouterLink
+            >
             <ul class="navbar-nav">
-              <li class="nav-item">
-                <RouterLink class="nav-link active" aria-current="page" :to="'/'">Home</RouterLink>
-              </li>
               <li class="nav-item">
                 <RouterLink
                   class="nav-link active"

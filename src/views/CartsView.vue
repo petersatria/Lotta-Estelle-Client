@@ -14,7 +14,6 @@ export default {
       this.checkout()
     },
     deleteProductHandler(id, size) {
-      console.log('masuk')
       let carts = JSON.parse(localStorage.getItem('carts'))
       const data = carts.filter((e) => e.id != id || e.size[0] !== size[0])
       this.carts = carts = data
@@ -37,9 +36,11 @@ export default {
       })
       this.carts = carts
       localStorage.carts = JSON.stringify(carts)
+    },
+    rupiah(value) {
+      return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
     }
   },
-
   created() {
     this.carts = JSON.parse(localStorage.getItem('carts'))
   }
@@ -48,7 +49,7 @@ export default {
 
 <template>
   <section class="container">
-    <h1 class="text-center">My Carts</h1>
+    <h1 class="text-center my-5">My Carts</h1>
     <div
       class="d-flex flex-column justif-content-center align-items-center py-5"
       v-if="carts?.length > 0"
@@ -69,7 +70,7 @@ export default {
                 >{{ cart.name }} ( {{ cart.size[1] }} )</span
               >
             </td>
-            <td>Rp {{ cart.price }}</td>
+            <td>{{ rupiah(cart.price) }}</td>
             <td>
               <div class="d-flex align-items-center">
                 <span style="color: silver">QTY:</span>
@@ -89,20 +90,27 @@ export default {
                 </div>
               </div>
             </td>
-            <td>Rp {{ cart.subtotal }}</td>
+            <td>{{ rupiah(cart.subtotal) }}</td>
             <td>
-              <button @click="deleteProductHandler(cart.id, cart.size)">
+              <button class="btn-delete" @click="deleteProductHandler(cart.id, cart.size)">
                 <span>delete</span>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div>
-        <button @click="checkout" class="btn btn-success">Check Out</button>
+      <div class="col-4 align-self-end my-5">
+        <button
+          @click="checkout"
+          class="btn btn-dark w-100 h-100"
+          style="font-size: 14px; padding: 10px"
+        >
+          Check Out
+        </button>
       </div>
     </div>
-    <div v-else>
+    <div v-else class="d-flex flex-column justify-content-center align-items-center">
+      <img src="../assets/undraw_empty_cart.svg" alt="" class="img-fluid w-50" />
       <h3 class="my-5">Your carts is empty, add your favourite products first</h3>
     </div>
   </section>
@@ -111,7 +119,6 @@ export default {
 <style scoped>
 .box-qty {
   border: 1px solid silver;
-  width: 8vw;
   margin: 0 20px;
   display: flex;
   justify-content: space-between;
@@ -138,7 +145,7 @@ export default {
   width: 4vw;
   border: transparent;
 }
-button {
+.btn-delete {
   border: transparent;
   /* background-color: transparent; */
   font-size: 1rem;

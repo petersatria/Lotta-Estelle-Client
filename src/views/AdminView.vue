@@ -55,7 +55,7 @@ export default {
 </script>
 
 <template>
-  <section class="container">
+  <section class="container mt-5">
     <RouterLink :to="'/add-product'">Add Product</RouterLink>
     <div class="table-responsive pt-4">
       <table class="table table-hover">
@@ -83,16 +83,16 @@ export default {
             <td>{{ product.imgUrl }}</td>
             <td>{{ product.categoryName }}</td>
             <td>
-              <select name="" id="">
+              <select class="form-select">
                 <option value="" selected>Available Size</option>
                 <option value="" v-for="(item, index) in product.SizeProducts" :key="index">
                   {{ item.size }} - {{ item.stock }}
                 </option>
               </select>
             </td>
-            <td>
+            <td class="">
               <form @submit.prevent="addSizeProductHandler(product.id)" class="d-flex">
-                <select @change="selectHandler">
+                <select @change="selectHandler" class="form-select mx-2">
                   <option value="" selected disabled>-- Select Size --</option>
                   <option
                     v-for="(item, index) in ['XS', 'S', 'M', 'L', 'XL', 'XXL']"
@@ -102,15 +102,27 @@ export default {
                     {{ item }}
                   </option>
                 </select>
-                <input type="number" @change="sizeHandler" />
+                <input
+                  type="number"
+                  @change="sizeHandler"
+                  class="form-control mx-2"
+                  placeholder="Stock"
+                  style="width: 90px"
+                />
                 <button type="submit" class="btn btn-success">Submit</button>
+                <button
+                  type="button"
+                  @click="deleteSizeProductHandler(product.id)"
+                  class="btn btn-danger mx-2"
+                >
+                  Delete
+                </button>
               </form>
-              <button @click="deleteSizeProductHandler(product.id)" class="btn btn-danger">
-                Delete
-              </button>
             </td>
             <td>
-              <button @click="editProductHandler(product.id)" class="btn btn-info">Edit</button>
+              <button @click="editProductHandler(product.id)" class="btn btn-secondary mx-2">
+                Edit
+              </button>
             </td>
           </tr>
         </tbody>
@@ -118,3 +130,17 @@ export default {
     </div>
   </section>
 </template>
+
+<style scoped>
+.form-select {
+  width: 180px;
+}
+
+.form-control {
+  width: 60px;
+}
+
+a {
+  color: #333;
+}
+</style>

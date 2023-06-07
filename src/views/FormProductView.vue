@@ -153,7 +153,9 @@ export default {
         </div>
       </div>
       <div class="col col-md-6 d-md-flex justify-content-center mx-auto">
-        <RouterLink to="/admin" class="btn btn-warning btn-lg py-2 w-100 m-2"> Cancel </RouterLink>
+        <RouterLink to="/admin" class="btn btn-lg py-2 w-100 m-2" style="border: 1px solid">
+          Cancel
+        </RouterLink>
         <button type="submit" class="btn btn-dark btn-lg py-2 w-100 m-2">Submit</button>
       </div>
     </form>

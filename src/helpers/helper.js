@@ -11,7 +11,6 @@ export function errorHandler(err) {
   if (err.name === 'AxiosError') {
     toast('error', err.response.data.message)
   } else {
-    console.log(err);
     toast('error', 'Error!!!')
   }
 }

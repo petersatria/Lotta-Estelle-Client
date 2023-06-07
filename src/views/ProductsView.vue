@@ -37,3 +37,9 @@ export default {
     </div>
   </section>
 </template>
+
+<style scoped>
+h1 {
+  color: #000000a6;
+}
+</style>

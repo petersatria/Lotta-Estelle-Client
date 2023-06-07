@@ -7,6 +7,11 @@ export default {
     toDetailProduct() {
       this.$router.push(`/products/${this.product.id}`)
     }
+  },
+  computed: {
+    rupiah() {
+      return this.product.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
+    }
   }
 }
 </script>
@@ -20,7 +25,7 @@ export default {
     </div>
     <div class="card-body d-flex flex-column justify-content-between">
       <p class="">{{ product.name }}</p>
-      <p class="">{{ product.price }}</p>
+      <p class="">{{ rupiah }}</p>
     </div>
   </div>
 </template>

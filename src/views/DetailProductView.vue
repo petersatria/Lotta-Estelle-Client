@@ -20,34 +20,41 @@ export default {
         imgUrl: this.product.imgUrl,
         subtotal: this.product.price
       }
-      if (!data.size[0]) {
-        return toast('error', 'Please select size first')
-      }
-      let carts = JSON.parse(localStorage.getItem('carts'))
-      if (!carts) {
-        carts = []
-        localStorage.setItem('carts', JSON.stringify(carts))
-      }
-
-      if (carts.find((e) => e.id === data.id && e.size[0] === data.size[0])) {
-        carts.find((e) => {
-          if (e.id === data.id && e.size[0] === data.size[0]) {
-            e.qty += data.qty
-            e.subtotal += data.price
-          }
-        })
+      if (!localStorage.access_token) {
+        toast('error', 'You need to login first')
       } else {
-        carts.push(data)
+        if (!data.size[0]) {
+          return toast('error', 'Please select size first')
+        }
+        let carts = JSON.parse(localStorage.getItem('carts'))
+        if (!carts) {
+          carts = []
+          localStorage.setItem('carts', JSON.stringify(carts))
+        }
+
+        if (carts.find((e) => e.id === data.id && e.size[0] === data.size[0])) {
+          carts.find((e) => {
+            if (e.id === data.id && e.size[0] === data.size[0]) {
+              e.qty += data.qty
+              e.subtotal += data.price
+            }
+          })
+        } else {
+          carts.push(data)
+        }
+        localStorage.setItem('carts', JSON.stringify(carts))
+        toast('success', 'Success add product')
       }
-      localStorage.setItem('carts', JSON.stringify(carts))
-      toast('success', 'Success add product')
     },
     selectHandler(e) {
       this.size = e.target.value.split(',')
     }
   },
   computed: {
-    ...mapState(useProductStore, ['product'])
+    ...mapState(useProductStore, ['product']),
+    rupiah() {
+      return this.product.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
+    }
   },
   created() {
     this.fetchProductById(this.$route.params.id)
@@ -64,7 +71,7 @@ export default {
       <div class="col-12 col-md-6 my-5 align-self-center">
         <h1>{{ product.name }}</h1>
         <p class="mt-5 mt-md-3 mt-lg-5"></p>
-        <p class="mt-5 mt-md-3 mt-lg-5">Rp {{ product.price }}</p>
+        <p class="mt-5 mt-md-3 mt-lg-5">{{ rupiah }}</p>
         <div class="row justify-content-center">
           <div class="col-4 mt-5 mt-md-3 mt-lg-5">
             <div class="dropdown">
@@ -82,27 +89,8 @@ export default {
                 >
                   {{ size.size }}
                 </option>
-                <!-- <option class="dropdown-item" value="S">S</option> -->
-                <!-- <option class="dropdown-item" value="M">M</option> -->
-                <!-- <option class="dropdown-item" value="L">L</option> -->
               </select>
             </div>
-            <!-- <div class="dropdown">
-              <button
-                class="btn dropdown-toggle w-100 h-100"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style="font-size: 14px; padding: 10px; border: 1px solid"
-              >
-                Select Size
-              </button>
-              <ul class="dropdown-menu">
-                <option class="dropdown-item" type="button" value="S">S</option>
-                <option class="dropdown-item" type="button" value="M">M</option>
-                <option class="dropdown-item" type="button" value="L">L</option>
-              </ul>
-            </div> -->
           </div>
           <div class="col-4 mt-5 mt-md-3 mt-lg-5">
             <div
@@ -160,7 +148,7 @@ h2 {
 
 img {
   min-height: 50vh;
-  max-height: 50vh;
+  max-height: 80vh;
   height: auto;
 }
 </style>

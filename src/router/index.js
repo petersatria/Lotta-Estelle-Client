@@ -6,6 +6,7 @@ import AdminView from '../views/AdminView.vue'
 import FormProductView from '../views/FormProductView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import LoginView from '../views/LoginView.vue'
+import NotFoundView from '../views/NotFoundView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,13 +59,18 @@ const router = createRouter({
       name: 'edit-product',
       component: FormProductView
     },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFoundView
+    },
   ]
 })
 
 router.beforeEach((to, from, next) => {
   if (localStorage.access_token && to.name === 'login' || localStorage.access_token && to.name === 'register') {
     next({ name: 'home' })
-  } else if (!localStorage.access_token && to.name === 'bookmarks') {
+  } else if (!localStorage.access_token && to.name === 'carts' || !localStorage.access_token && to.name === 'admin') {
     next({ name: 'login' })
   } else if (localStorage.access_token && to.name === 'admin' && localStorage.role !== 'Admin') {
     next({ name: 'home' })

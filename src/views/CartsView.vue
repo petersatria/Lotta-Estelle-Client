@@ -1,3 +1,17 @@
+<script>
+export default {
+  data() {
+    return {
+      carts: []
+    }
+  },
+  created() {
+    this.carts = JSON.parse(localStorage.getItem('carts'))
+    console.log(this.carts)
+  }
+}
+</script>
+
 <template>
   <section class="container">
     <h1 class="text-center">My Carts</h1>
@@ -12,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="border-custom">
+          <tr class="border-custom" v-for="(cart, index) in carts" :key="index">
             <td class="py-4 d-flex align-items-center flex-column flex-md-row">
               <img
                 src="https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/5237fa429d84abfa6e515254dd09d18fe455efb0_xxl-1.jpg"

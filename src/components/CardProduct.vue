@@ -1,23 +1,26 @@
 <script>
 import { mapActions } from 'pinia'
 
-export default {}
+export default {
+  props: ['product'],
+  methods: {
+    toDetailProduct() {
+      this.$router.push(`/products/${this.product.id}`)
+    }
+  }
+}
 </script>
 
 <template>
-  <div class="card h-100">
+  <div class="card h-100" @click="toDetailProduct">
     <div>
-      <div>
-        <img
-          height="320"
-          src="https://www.footlocker.id/media/catalog/product/0/1/01-ADIDAS-AYAV6ADI5-ADIHZ4935-White.jpg"
-          alt=""
-        />
+      <div class="img-wrapper">
+        <img height="320" :src="product.imgUrl" alt="" />
       </div>
     </div>
-    <div class="card-body">
-      <p class="">Relaxed Fit Printed T-shirt</p>
-      <p class="">Rp&nbsp;459.900,00</p>
+    <div class="card-body d-flex flex-column justify-content-between">
+      <p class="">{{ product.name }}</p>
+      <p class="">{{ product.price }}</p>
     </div>
   </div>
 </template>
@@ -46,7 +49,7 @@ img {
 }
 .img-wrapper {
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 5px 5px 0 0;
   margin: 0 auto;
 }
 

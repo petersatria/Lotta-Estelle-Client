@@ -1,28 +1,11 @@
 <script>
-import Card from '../components/Card.vue'
+import ProductView from '../views/ProductsView.vue'
 export default {
-  components: {
-    Card
-  }
+  components: { ProductView }
 }
 </script>
 
 <template>
-  <section class="container">
-    <div class="row g-5">
-      <h1 class="text-center">Products</h1>
-      <div class="col-6 col-md-3">
-        <Card />
-      </div>
-      <div class="col-6 col-md-3">
-        <Card />
-      </div>
-      <div class="col-6 col-md-3">
-        <Card />
-      </div>
-      <div class="col-6 col-md-3">
-        <Card />
-      </div>
-    </div>
-  </section>
+  <ProductView />
+  <RouterView />
 </template>

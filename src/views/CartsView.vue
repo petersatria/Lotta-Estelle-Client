@@ -1,13 +1,47 @@
 <script>
+import { mapActions, mapState } from 'pinia'
+import { useProductStore } from '../stores/product'
+import { toast } from '../helpers/helper'
 export default {
   data() {
     return {
       carts: []
     }
   },
+  methods: {
+    ...mapActions(useProductStore, ['checkout']),
+    checkoutHandler() {
+      this.checkout()
+    },
+    deleteProductHandler(id, size) {
+      console.log('masuk')
+      let carts = JSON.parse(localStorage.getItem('carts'))
+      const data = carts.filter((e) => e.id != id || e.size[0] !== size[0])
+      this.carts = carts = data
+      localStorage.carts = JSON.stringify(carts)
+    },
+    quantityHandler(id, size, price, type) {
+      let carts = JSON.parse(localStorage.getItem('carts'))
+      carts.find((e) => {
+        if (e.id === id && e.size[0] === size[0] && type === 'decrement') {
+          if (e.qty == 1) {
+            toast('error', 'Minimum quantity is 1')
+          } else {
+            e.qty--
+            e.subtotal -= price
+          }
+        } else if (e.id === id && e.size[0] === size[0] && type === 'increment') {
+          e.qty++
+          e.subtotal += price
+        }
+      })
+      this.carts = carts
+      localStorage.carts = JSON.stringify(carts)
+    }
+  },
+
   created() {
     this.carts = JSON.parse(localStorage.getItem('carts'))
-    console.log(this.carts)
   }
 }
 </script>
@@ -15,7 +49,10 @@ export default {
 <template>
   <section class="container">
     <h1 class="text-center">My Carts</h1>
-    <div class="d-flex flex-column justif-content-center align-items-center py-5">
+    <div
+      class="d-flex flex-column justif-content-center align-items-center py-5"
+      v-if="carts?.length > 0"
+    >
       <table class="w-100">
         <thead>
           <tr>
@@ -28,26 +65,33 @@ export default {
         <tbody>
           <tr class="border-custom" v-for="(cart, index) in carts" :key="index">
             <td class="py-4 d-flex align-items-center flex-column flex-md-row">
-              <img
-                src="https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/5237fa429d84abfa6e515254dd09d18fe455efb0_xxl-1.jpg"
-                class="Cart_imageTable__UIT9I"
-                width="100"
-              /><span class="m-2">Oversized Cotton T-shirt (S)</span>
+              <img :src="cart.imgUrl" class="Cart_imageTable__UIT9I" width="100" /><span class="m-2"
+                >{{ cart.name }} ( {{ cart.size[1] }} )</span
+              >
             </td>
-            <td>Rp 379900</td>
+            <td>Rp {{ cart.price }}</td>
             <td>
               <div class="d-flex align-items-center">
                 <span style="color: silver">QTY:</span>
                 <div class="box-qty">
-                  <button class="cart-qty-btn">+</button
-                  ><input class="cart-qty-input" placeholder="1" />
-                  <button class="cart-qty-btn">-</button>
+                  <button
+                    @click="quantityHandler(cart.id, cart.size, cart.price, 'increment')"
+                    class="cart-qty-btn"
+                  >
+                    +</button
+                  ><input class="cart-qty-input" :placeholder="cart.qty" />
+                  <button
+                    @click="quantityHandler(cart.id, cart.size, cart.price, 'decrement')"
+                    class="cart-qty-btn"
+                  >
+                    -
+                  </button>
                 </div>
               </div>
             </td>
-            <td>Rp 379900.00</td>
+            <td>Rp {{ cart.subtotal }}</td>
             <td>
-              <button>
+              <button @click="deleteProductHandler(cart.id, cart.size)">
                 <span>delete</span>
               </button>
             </td>
@@ -55,8 +99,11 @@ export default {
         </tbody>
       </table>
       <div>
-        <button class="btn btn-success">Check Out</button>
+        <button @click="checkout" class="btn btn-success">Check Out</button>
       </div>
+    </div>
+    <div v-else>
+      <h3 class="my-5">Your carts is empty, add your favourite products first</h3>
     </div>
   </section>
 </template>

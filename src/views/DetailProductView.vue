@@ -5,24 +5,35 @@ import { toast } from '../helpers/helper'
 export default {
   data() {
     return {
-      size: ''
+      size: []
     }
   },
   methods: {
     ...mapActions(useProductStore, ['fetchProductById']),
     addToCartHandler() {
-      const data = { id: this.product.id, size: this.size, qty: 1, price: this.product.price }
+      const data = {
+        id: this.product.id,
+        name: this.product.name,
+        size: this.size,
+        qty: 1,
+        price: this.product.price,
+        imgUrl: this.product.imgUrl,
+        subtotal: this.product.price
+      }
+      if (!data.size[0]) {
+        return toast('error', 'Please select size first')
+      }
       let carts = JSON.parse(localStorage.getItem('carts'))
-      console.log(carts, 'length')
       if (!carts) {
         carts = []
         localStorage.setItem('carts', JSON.stringify(carts))
       }
 
-      if (carts.find((e) => e.id === data.id && e.size === data.size)) {
+      if (carts.find((e) => e.id === data.id && e.size[0] === data.size[0])) {
         carts.find((e) => {
-          if (e.id === data.id && e.size === data.size) {
+          if (e.id === data.id && e.size[0] === data.size[0]) {
             e.qty += data.qty
+            e.subtotal += data.price
           }
         })
       } else {
@@ -60,9 +71,17 @@ export default {
                 v-model="size"
               >
                 <option class="dropdown-item" value="" selected disabled>Select Size</option>
-                <option class="dropdown-item" value="S">S</option>
-                <option class="dropdown-item" value="M">M</option>
-                <option class="dropdown-item" value="L">L</option>
+                <option
+                  class="dropdown-item"
+                  :value="[size.id, size.size]"
+                  v-for="size in product.SizeProducts"
+                  :key="size.id"
+                >
+                  {{ size.size }}
+                </option>
+                <!-- <option class="dropdown-item" value="S">S</option> -->
+                <!-- <option class="dropdown-item" value="M">M</option> -->
+                <!-- <option class="dropdown-item" value="L">L</option> -->
               </select>
             </div>
             <!-- <div class="dropdown">

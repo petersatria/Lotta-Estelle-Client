@@ -41,6 +41,9 @@ export default {
       }
       localStorage.setItem('carts', JSON.stringify(carts))
       toast('success', 'Success add product')
+    },
+    selectHandler(e) {
+      this.size = e.target.value.split(',')
     }
   },
   computed: {
@@ -68,7 +71,7 @@ export default {
               <select
                 class="btn dropdown-toggle w-100 h-100"
                 style="font-size: 14px; padding: 10px; border: 1px solid"
-                v-model="size"
+                @change="selectHandler"
               >
                 <option class="dropdown-item" value="" selected disabled>Select Size</option>
                 <option

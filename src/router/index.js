@@ -4,10 +4,22 @@ import DetailProductView from '../views/DetailProductView.vue'
 import CartsView from '../views/CartsView.vue'
 import AdminView from '../views/AdminView.vue'
 import FormProductView from '../views/FormProductView.vue'
+import RegisterView from '../views/RegisterView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView
+    },
     {
       path: '/',
       name: 'home',
@@ -47,6 +59,18 @@ const router = createRouter({
       component: FormProductView
     },
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (localStorage.access_token && to.name === 'login' || localStorage.access_token && to.name === 'register') {
+    next({ name: 'home' })
+  } else if (!localStorage.access_token && to.name === 'bookmarks') {
+    next({ name: 'login' })
+  } else if (localStorage.access_token && to.name === 'admin' && localStorage.role !== 'Admin') {
+    next({ name: 'home' })
+  } else {
+    next()
+  }
 })
 
 export default router

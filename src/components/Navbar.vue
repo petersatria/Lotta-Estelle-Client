@@ -1,6 +1,22 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
 import { mapActions, mapState } from 'pinia'
+import { useUserStore } from '../stores/user'
+
+export default {
+  computed: {
+    ...mapState(useUserStore, ['access_token', 'role']),
+    currentPage() {
+      return this.$route.name
+    }
+  },
+  methods: {
+    ...mapActions(useUserStore, ['handleLogout']),
+    logoutHandler() {
+      this.handleLogout()
+    }
+  }
+}
 </script>
 
 <template>
@@ -28,16 +44,43 @@ import { mapActions, mapState } from 'pinia'
                 <RouterLink class="nav-link active" aria-current="page" :to="'/'">Home</RouterLink>
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link" :to="'/carts'">My Carts</RouterLink>
+                <RouterLink
+                  class="nav-link active"
+                  aria-current="page"
+                  :to="'/admin'"
+                  v-if="access_token && role === 'Admin'"
+                  >Admin</RouterLink
+                >
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link" :to="'/login'">Sign In</RouterLink>
+                <RouterLink class="nav-link" :to="'/carts'" v-if="access_token"
+                  >My Carts</RouterLink
+                >
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link" :to="'/register'">Sign Up</RouterLink>
+                <RouterLink
+                  class="nav-link"
+                  :to="'/login'"
+                  v-if="currentPage !== 'login' && !access_token"
+                  >Sign In</RouterLink
+                >
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link" :to="'/login'">Sign Out</RouterLink>
+                <RouterLink
+                  class="nav-link"
+                  :to="'/register'"
+                  v-if="currentPage !== 'register' && !access_token"
+                  >Sign Up</RouterLink
+                >
+              </li>
+              <li class="nav-item">
+                <RouterLink
+                  class="nav-link"
+                  :to="'/login'"
+                  v-if="access_token"
+                  @click="logoutHandler"
+                  >Sign Out</RouterLink
+                >
               </li>
             </ul>
           </div>

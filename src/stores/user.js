@@ -14,7 +14,6 @@ export const useUserStore = defineStore('user', {
   actions: {
     async handleRegister(userData) {
       try {
-        console.log(userData);
         const { data } = await axios({
           method: 'POST',
           url: this.baseUrl + '/register',

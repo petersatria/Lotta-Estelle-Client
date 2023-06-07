@@ -52,7 +52,6 @@ export const useProductStore = defineStore('product', {
         this.fetchSizeProducts()
 
       } catch (err) {
-        console.log(err);
         errorHandler(err)
       }
     },
@@ -85,7 +84,6 @@ export const useProductStore = defineStore('product', {
         this.router.push('/admin')
         this.fetchProducts()
       } catch (err) {
-        console.log(err);
         errorHandler(err)
       }
     },
@@ -100,7 +98,6 @@ export const useProductStore = defineStore('product', {
         this.router.push('/admin')
         this.fetchProducts()
       } catch (err) {
-        console.log(err);
         errorHandler(err)
       }
     },
@@ -113,7 +110,6 @@ export const useProductStore = defineStore('product', {
         })
         localStorage.carts = []
       } catch (err) {
-        console.log(err);
         errorHandler(err)
       }
     },
@@ -121,17 +117,13 @@ export const useProductStore = defineStore('product', {
       try {
         let carts = JSON.parse(localStorage.carts)
         carts.forEach(e => e.size = e.size[0])
-        // console.log('mecoba checkot', carts);
         const { data } = await axios({
           method: 'POST',
           url: this.baseUrl + `/api/transactions`,
           headers: { access_token: localStorage.access_token },
           data: { carts }
         })
-        console.log(data);
-        // this.product = data.data
-        // console.log(data.data);
-        // const cb = this.paid
+
 
         window.snap.pay(data.midtransToken.token, {
           onSuccess: async function (result) {
@@ -158,7 +150,6 @@ export const useProductStore = defineStore('product', {
           }
         })
       } catch (err) {
-        console.log(err);
         errorHandler(err)
       }
     },

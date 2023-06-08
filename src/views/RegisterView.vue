@@ -118,7 +118,7 @@ img {
 }
 
 a {
-  color: #687d82;
+  color: #333;
 }
 
 a:hover {

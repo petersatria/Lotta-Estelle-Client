@@ -55,6 +55,11 @@ export default {
                 >
               </li>
               <li class="nav-item">
+                <RouterLink class="nav-link" :to="'/histories'" v-if="access_token"
+                  >My Histories</RouterLink
+                >
+              </li>
+              <li class="nav-item">
                 <RouterLink
                   class="nav-link"
                   :to="'/login'"

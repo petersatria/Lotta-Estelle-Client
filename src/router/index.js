@@ -7,6 +7,7 @@ import FormProductView from '../views/FormProductView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import LoginView from '../views/LoginView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
+import HistoriesView from '../views/HistoriesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       component: CartsView
     },
     {
+      path: '/histories',
+      name: 'histories',
+      component: HistoriesView
+    },
+    {
       path: '/admin',
       name: 'admin',
       component: AdminView
@@ -74,6 +80,8 @@ router.beforeEach((to, from, next) => {
     next({ name: 'login' })
   } else if (localStorage.access_token && to.name === 'admin' && localStorage.role !== 'Admin') {
     next({ name: 'home' })
+  } else if (!localStorage.access_token && to.name === 'histories') {
+    next({ name: 'login' })
   } else {
     next()
   }

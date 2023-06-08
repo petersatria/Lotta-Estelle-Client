@@ -64,12 +64,11 @@ export default {
             <th>#</th>
             <th>Name</th>
             <th>Title</th>
-            <th>Description</th>
             <th>Price</th>
             <th>Image Url</th>
             <th>Category</th>
             <th>Size</th>
-            <th>Edit, Add, & Delete Size</th>
+            <th>Actions</th>
             <th>Edit Product</th>
           </tr>
         </thead>
@@ -78,7 +77,6 @@ export default {
             <td>{{ ++index }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.title }}</td>
-            <td>{{ product.description }}</td>
             <td>{{ product.price }}</td>
             <td>{{ product.imgUrl }}</td>
             <td>{{ product.categoryName }}</td>

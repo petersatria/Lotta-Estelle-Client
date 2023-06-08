@@ -4,11 +4,12 @@ import { errorHandler, toast } from '../helpers/helper'
 
 export const useProductStore = defineStore('product', {
   state: () => ({
-    baseUrl: 'http://localhost:3000',
-    // baseUrl: 'https://lotta-estelle-server.petersox.online',
+    // baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://lotta-estelle-server.petersox.online',
     products: [],
     sizeProducts: [],
-    product: {}
+    product: {},
+    histories: []
 
   }),
   getters: {
@@ -125,19 +126,19 @@ export const useProductStore = defineStore('product', {
           data: { carts }
         })
 
-
+        let router = this.router
         window.snap.pay(data.midtransToken.token, {
           onSuccess: async function (result) {
             /* You may add your own implementation here */
             // cb()
             await axios({
               method: 'PATCH',
-              url: `http://localhost:3000/api/transactions/${data.transaction.id}`,
+              url: `https://lotta-estelle-server.petersox.online/api/transactions/${data.transaction.id}`,
               headers: { access_token: localStorage.access_token },
             })
             localStorage.removeItem('carts')
             toast('success', 'payment success')
-
+            router.push('/')
           },
           onPending: function (result) {
             /* You may add your own implementation here */
@@ -150,11 +151,22 @@ export const useProductStore = defineStore('product', {
           onClose: function () {
             /* You may add your own implementation here */
             toast('warning', 'you closed the popup without finishing the payment')
-          }
+          },
         })
       } catch (err) {
         errorHandler(err)
       }
     },
+    async fetchTransaction() {
+      try {
+        const { data } = await axios({
+          url: this.baseUrl + `/api/transactions`,
+          headers: { access_token: localStorage.access_token }
+        })
+        this.histories = data.data
+      } catch (err) {
+        errorHandler(err)
+      }
+    }
   },
 })

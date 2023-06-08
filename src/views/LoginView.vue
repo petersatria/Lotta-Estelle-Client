@@ -65,7 +65,7 @@ export default {
                     >
                       Login
                     </button>
-                    <p>
+                    <p class="mb-0 mt-3">
                       <RouterLink href="/register" :to="'register'">Create an account</RouterLink>
                     </p>
                   </div>

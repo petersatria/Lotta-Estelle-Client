@@ -11,6 +11,14 @@ export default {
   computed: {
     rupiah() {
       return this.product.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
+    },
+    nameProduct() {
+      let name = this.product.name.split(' ')
+      name.forEach((e, i) => {
+        name[i] = name[i][0].toUpperCase() + name[i].substr(1)
+      })
+      name = name.join(' ')
+      return name
     }
   }
 }
@@ -24,7 +32,7 @@ export default {
       </div>
     </div>
     <div class="card-body d-flex flex-column justify-content-between">
-      <p class="">{{ product.name }}</p>
+      <p class="">{{ nameProduct }}</p>
       <p class="">{{ rupiah }}</p>
     </div>
   </div>

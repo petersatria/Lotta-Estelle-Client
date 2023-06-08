@@ -54,6 +54,14 @@ export default {
     ...mapState(useProductStore, ['product']),
     rupiah() {
       return this.product.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
+    },
+    nameProduct() {
+      let name = this.product.name.split(' ')
+      name.forEach((e, i) => {
+        name[i] = name[i][0].toUpperCase() + name[i].substr(1)
+      })
+      name = name.join(' ')
+      return name
     }
   },
   created() {
@@ -69,7 +77,7 @@ export default {
         <img class="img-fluid" :src="product.imgUrl" alt="" />
       </div>
       <div class="col-12 col-md-6 my-5 align-self-center">
-        <h1>{{ product.name }}</h1>
+        <h1>{{ nameProduct }}</h1>
         <p class="mt-5 mt-md-3 mt-lg-5"></p>
         <p class="mt-5 mt-md-3 mt-lg-5">{{ rupiah }}</p>
         <div class="row justify-content-center">

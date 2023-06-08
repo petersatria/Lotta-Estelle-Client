@@ -85,6 +85,7 @@ export const useProductStore = defineStore('product', {
         })
         this.router.push('/admin')
         this.fetchProducts()
+        toast('success', 'Success add product')
       } catch (err) {
         errorHandler(err)
       }
@@ -99,6 +100,7 @@ export const useProductStore = defineStore('product', {
         })
         this.router.push('/admin')
         this.fetchProducts()
+        toast('success', 'Success update product')
       } catch (err) {
         errorHandler(err)
       }

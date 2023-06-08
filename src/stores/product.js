@@ -5,6 +5,7 @@ import { errorHandler, toast } from '../helpers/helper'
 export const useProductStore = defineStore('product', {
   state: () => ({
     baseUrl: 'http://localhost:3000',
+    // baseUrl: 'https://lotta-estelle-server.petersox.online',
     products: [],
     sizeProducts: [],
     product: {}
@@ -105,7 +106,7 @@ export const useProductStore = defineStore('product', {
       try {
         await axios({
           method: 'PATCH',
-          url: this.baseUrl + `/api//transactions${id}`,
+          url: this.baseUrl + `/api/transactions${id}`,
           headers: { access_token: localStorage.access_token },
         })
         localStorage.carts = []
@@ -135,6 +136,8 @@ export const useProductStore = defineStore('product', {
               headers: { access_token: localStorage.access_token },
             })
             localStorage.removeItem('carts')
+            toast('success', 'payment success')
+
           },
           onPending: function (result) {
             /* You may add your own implementation here */

@@ -4,6 +4,7 @@ import { errorHandler, toast } from '../helpers/helper'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
+    // baseUrl: 'https://lotta-estelle-server.petersox.online/api',
     baseUrl: 'http://localhost:3000/api',
     access_token: localStorage.access_token,
     role: localStorage.role
